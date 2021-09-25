@@ -33,7 +33,7 @@ async def get_todo(todo_id: int):
 
 @app.put("/todos/{todo_id}", response_model=Todo_Pydantic, responses={404: {"model": HTTPNotFoundError}})
 async def update_todo(todo_id: int, todo: TodoIn_Pydantic):
-    await Todo.filter(id=todo_id).update(**todo.dict(exclude_unset=True))
+    await Todo.filter(id=todo_id).update(**todo.dict(exclude={"id"}, exclude_unset=True))
     return await Todo_Pydantic.from_queryset_single(Todo.get(id=todo_id))
 
 
